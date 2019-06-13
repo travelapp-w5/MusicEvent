@@ -1,2 +1,2 @@
-# Travel-App
-Travel App using three public APIs
+# MusicEvent
+Music Event App using three public APIs
