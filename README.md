@@ -1,2 +1,2 @@
 # MusicEvent
-Music Event App using three public APIs
+Shows music events on calendar with public holiday in that city
