@@ -1,7 +1,8 @@
 const router = require('express').Router()
 const userRoutes = require('./users')
-const travelAppRoutes = require('./travelApps')
+const musicEventRoutes = require('./musicEvent')
 
-router.use('/users')
+router.use('/users', userRoutes)
+router.use('/musicEvent', musicEventRoutes)
 
 module.exports = router
