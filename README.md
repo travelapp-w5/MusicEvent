@@ -1,2 +1,2 @@
-# Travel-App
-Travel App using three public APIs
+# MusicEvent
+Shows music events on calendar with public holiday in that city
