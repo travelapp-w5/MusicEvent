@@ -1,6 +1,7 @@
 const baseUrl = 'http://localhost:3000/';
 // Data from stef's endpoint
 let holidayArr
+let eventArr
 
 // Format form inputs to json-like
 function format(form) {
@@ -41,8 +42,23 @@ function appendFavorite(obj) {
 }
 
 function addFav(id) {
-  // Jays isi ini
-  alert(id)
+  let fav
+  for(let event of eventArr) {
+    if(event.eventId.toString() === id) {
+      fav = event
+    }
+  }
+  fav.holidayList = holidayArr;
+
+  $.ajax({
+    method: "POST",
+    url: `${baseUrl}/addFav/${id}`,
+    data: fav,
+    headers: {token: localStorage.getItem('token')}
+  })
+  .done(data => {
+    console.log(data)
+  })
 }
 
 function appendCurrency(obj) {
@@ -66,6 +82,7 @@ $(document).ready(() => {
       data: input,
     })
       .done(data => {
+        eventArr = data.events
         console.log(data);
         appendCurrency(data);
         $('#list2').empty();
@@ -128,7 +145,15 @@ function onSignIn(googleUser) {
   })
 }
 
-function signOut() {
+function logout() {
+  localStorage.clear()
+  $('.currencyinfo').empty()
+  $('#list1').empty()
+  $('#list2').empty()
+  $('#list3').empty()
+  $('#inside').hide()
+  $('#outside').show()
+
   let auth2 = gapi.auth2.getAuthInstance();
   auth2
     .signOut()
