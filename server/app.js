@@ -1,9 +1,10 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const routes = require('./routes')
+const routes = require('./routers')
 const mongoose = require('mongoose');
-const url = 'mongodb://localhost:27017/'
+const dbName = "musicEvent"
+const url = "mongodb://localhost:27017/"+dbName
 const cors = require('cors')
 require('dotenv').config()
 app.use(cors())
