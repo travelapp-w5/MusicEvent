@@ -196,11 +196,11 @@ section {
   padding-right: 0.4rem;
 }
 
-#search {
+#holidays {
   border-right: 1px solid black;
 }
 
-#favorites {
+#events {
   border-right: 1px solid black;
 }
 
@@ -215,11 +215,6 @@ section {
   margin-left: 0.2rem;
 }
 
-#list1, #list2 {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-}
 #list2 {
   margin-top: 1rem;
 }
@@ -329,3 +324,16 @@ section {
   color: #ce713c;
 }
 
+.event {
+  margin-bottom: 0.8rem;
+  padding: 0.5rem;
+  background-color: #eee;
+  border: 1px solid black;
+}
+
+.holiday {
+  margin-bottom: 0.7rem;
+  padding: 0.4rem;
+  background-color: #eee;
+  border: 1px solid black;
+}
