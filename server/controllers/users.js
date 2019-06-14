@@ -36,12 +36,29 @@ class ControllerUser {
     let userEmail = req.userData.email
     let eventId = req.params.eventId
     let input = req.body
+    let user = {}
 
     User.findOne({email: userEmail})
       .then(found => {
         if (found){
+          user = found
+          return Favorite.find({owner: found._id})
+        } else {
+          //user not found
+          throw new Error("user not found")
+        }
+      })
+      .then(favList => {
+        if(favList){
+          favList.forEach(event => {
+            if(event.eventId == eventId){
+              //duplicate fav
+              throw new Error("already added to favorite")
+            }
+          })
+
           let favObj = {}
-          favObj.owner = found._id
+          favObj.owner = user._id
           favObj.eventId = eventId
           favObj.displayName = input.displayName
           favObj.startDate = input.startDate
@@ -54,9 +71,6 @@ class ControllerUser {
           favObj.isHoliday = compareDate(holidayListArray, input.startDate)
 
           return Favorite.create(favObj)
-        } else {
-          //user not found
-          throw new Error("user not found")
         }
       })
       .then(fav => {
