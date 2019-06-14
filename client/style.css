@@ -337,3 +337,45 @@ section {
   background-color: #eee;
   border: 1px solid black;
 }
+
+.fav {
+  border: 2px solid black;
+  margin-top: 20px;
+  padding: 0.5rem;
+}
+
+.content_list {
+  overflow-y: auto;
+  height: 600px;
+  max-height: 100vh;
+}
+
+.false {
+  margin-top: 10px;
+  color: white;
+  background-color: rgb(172, 37, 37);
+  border-radius: 8px;
+  padding: 8px;
+  width: 100px;
+}
+
+.false::before {
+  content: "Not ";
+}
+
+.true {
+  color: white;
+  margin-top: 10px;
+  background-color: green;
+  border-radius: 8px;
+  padding: 8px;
+  width: 70px;
+}
+
+.holidayStatus {
+  margin-left: 300px;
+}
+
+.pub-holiday {
+  height: 400px
+}
