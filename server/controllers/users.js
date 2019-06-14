@@ -1,6 +1,7 @@
 const User = require('../models/users')
 const comparePassword = require('../helpers/comparePassword')
 const getToken = require('../helpers/getToken')
+const getPassword = require('../helpers/getPassword')
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -14,6 +15,7 @@ class ControllerUser {
   }
 
   static create(req, res, next) {
+    console.log('masuk')
     const { email, password } = req.body
     const input = { email, password }
     User.create(input)
@@ -32,7 +34,7 @@ class ControllerUser {
       if(user){
         let check = comparePassword(user.password, input.password)
         if(check) {
-          let token = getToken(user)
+          let token = getToken(email)
           res.json(token)
         } else {
           throw {status: 400, message: 'Wrong email / password'}
@@ -66,7 +68,7 @@ class ControllerUser {
           res.status(200).json({newEmail, token})
         } else {
           return User.create({
-            email: email,
+            email: newEmail,
             password: password
           })
         }

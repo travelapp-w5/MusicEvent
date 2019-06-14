@@ -33,11 +33,10 @@ function accesToken(token) {
 }
 
 function onSignIn(googleUser) {
-  const idToken = googleUser.AuthResponse().id_token
-
+  const idToken = googleUser.getAuthResponse().id_token
   $.ajax({
     method: "POST",
-    url:"api/users/googleSignin",
+    url:`${baseUrl}api/users/googleSignin`,
     data: { idToken }
   })
   .done((result) => {
@@ -45,6 +44,7 @@ function onSignIn(googleUser) {
     alert('Success signed in with google')
   })
   .fail((err) => {
+    // console.log(err.responseJSON.message)
     alert(err.responseJSON.message)
   })
 }
@@ -66,7 +66,7 @@ $('#login-form').submit(() => {
   let inputPassword = $('#loginPassword').val()
   $.ajax({
     method: "POST",
-    url: "api/users/login",
+    url: `${baseUrl}api/users/login`,
     data: {
       email: inputEmail,
       password: inputPassword
@@ -85,14 +85,14 @@ $('#login-form').submit(() => {
 
 // -------- Register ------------
 
-$('#register-form').submit(() => {
+$('#register-form').submit((event) => {
   event.preventDefault()
   let inputEmail = $('#registrationEmail').val()
   let inputPassword = $('#registrationPassword').val()
-
+  console.log('masuk')
   $.ajax({ 
     method: "POST",
-    url: "api/users/register",
+    url: `${baseUrl}api/users/register`,
     data: {
       email: inputEmail,
       password: inputPassword

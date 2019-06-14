@@ -1,10 +1,11 @@
-<<<<<<< 344320eabb329d8f901f8ed36c50a417fee48aaa
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="308421336281-c3jncpnpa4rajngvu1s9vkvkaem9ic8o.apps.googleusercontent.com">
   <!-- Link to CSS file -->
   <link rel="stylesheet" type="text/css" href="./style.css">
   <!-- Jquery -->
@@ -20,13 +21,13 @@
     <input id="search-input" class="input2" type="text" placeholder="Enter country" name="country" autocomplete="off">
     <button class="button" type="submit">Search</button><span id="search-status"></span>
   </form> -->
-  <div id="outside" style="display: none;">
+  <div id="outside" style="display: block;">
     <div id="title">Music Events</div>
     <div id="subtitle">
       Register for a new account / login to an existing account.
     </div>
     <div id="front-forms" style="display: flex; justify-content: center;">
-      <form id="register-form" class="form1" action="/" method="POST" autocomplete="off">
+      <form id="register-form" class="form1" autocomplete="off">
         <div class="form1title">Register</div>
         <input class="input1" type="text" placeholder="New Email" name="email" required id="registrationEmail">
         <br>
@@ -42,13 +43,16 @@
         <br>
         <button class="button" type="submit">Login</button>
       </form>
+
     </div>
+    <div style="display: flex; justify-content: center;"><div class="g-signin2" data-onsuccess="onSignIn" style="text-align: center;"></div></div>
+    <a href="#" onclick="signOut();">Sign out</a>
     <div id="reg-message">
       <p>Successfully Registered</p>
       <button id="ok1" class="button">Return</button>
     </div>
   </div>
-  <div id="inside" style="display: block;">
+  <div id="inside" style="display: none;">
     <nav class="navbar">
       <a id="toplogo" class="navlink">Music Events</a>
       <div>
@@ -98,46 +102,14 @@
       </section>
     </div>
   </div>
-</body>
-=======
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <h3>Login</h3>
-  <div id="loginContainer">
-    <form id="login">
-      <label for="loginEmail">Email</label>
-      <input type="text" id="loginEmail">
-      <label for="loginPassword">Password</label>
-      <input type="password" id="loginPassword">
-      <button type="submit">Login</button>
-      <h5>Or login with google: </h5>
-      <div class="g-signin2" data-onsuccess="onSignIn"></div>
-    </form>
-  </div>
-  <div id="regisContainer">
-    <h3>Register</h3>
-    <form id="register">
-      <label for="registerEmail">Email</label>
-      <input type="text" id="registerEmail">
-      <label for="registerPassword">Password</label>
-      <input type="password" id="registerPassword">
-      <button type="submit">Register</button>
-      <h5>Or register with google: </h5>
-      <div class="g-signin2" data-onsuccess="onSignIn"></div>
-    </form>
-  </div>
-  <script 
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
   <script src="index.js"></script>
+  <script>
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.');
+        });
+      }
+    </script>
 </body>
->>>>>>> login/register
 </html>
