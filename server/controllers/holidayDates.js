@@ -93,9 +93,8 @@ class ControllerHolidayDates {
 	}
 
 	static availableCountries(req, res, next){
-		holidaysAPI.get("/availableCountries")
-			.then(({data}) => {
-				console.log(data)
+		ControllerHolidayDates.getAvailableCountries(req, res, next)
+			.then(data => {
 				res.status(200).json(data)
 			})
 			.catch(next)	
