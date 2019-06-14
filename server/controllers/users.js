@@ -8,6 +8,16 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const compareDate = require('../helpers/compareDate')
 
 class ControllerUser {
+
+  static delFav(req, res, next){
+    let delFavId = req.params.favId
+    Favorite.findByIdAndDelete(delFavId)
+    .then(done => {
+      res.json(done)
+    })
+    .catch(next)
+  }
+
   static getFav(req, res, next){
     let userEmail = req.userData.email
     User.findOne({email: userEmail})
@@ -26,12 +36,29 @@ class ControllerUser {
     let userEmail = req.userData.email
     let eventId = req.params.eventId
     let input = req.body
+    let user = {}
 
     User.findOne({email: userEmail})
       .then(found => {
         if (found){
+          user = found
+          return Favorite.find({owner: found._id})
+        } else {
+          //user not found
+          throw new Error("user not found")
+        }
+      })
+      .then(favList => {
+        if(favList){
+          favList.forEach(event => {
+            if(event.eventId == eventId){
+              //duplicate fav
+              throw new Error("already added to favorite")
+            }
+          })
+
           let favObj = {}
-          favObj.owner = found._id
+          favObj.owner = user._id
           favObj.eventId = eventId
           favObj.displayName = input.displayName
           favObj.startDate = input.startDate
@@ -44,10 +71,6 @@ class ControllerUser {
           favObj.isHoliday = compareDate(holidayListArray, input.startDate)
 
           return Favorite.create(favObj)
-
-        } else {
-          //user not found
-          throw new Error("user not found")
         }
       })
       .then(fav => {
