@@ -2,6 +2,9 @@ const User = require('../models/users')
 const Favorite = require('../models/favorite.js')
 const comparePassword = require('../helpers/comparePassword')
 const getToken = require('../helpers/getToken')
+const getPassword = require('../helpers/getPassword')
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 class ControllerUser {
   static addFav(req, res, next){
@@ -59,6 +62,7 @@ class ControllerUser {
   }
 
   static create(req, res, next) {
+    console.log('masuk')
     const { email, password } = req.body
     const input = { email, password }
     User.create(input)
@@ -77,7 +81,7 @@ class ControllerUser {
       if(user){
         let check = comparePassword(user.password, input.password)
         if(check) {
-          let token = getToken(user)
+          let token = getToken(email)
           res.json(token)
         } else {
           throw {status: 400, message: 'Wrong email / password'}
@@ -87,6 +91,39 @@ class ControllerUser {
       }
     })
     .catch(next)
+  }
+
+  static googleSignin(req, res, next) {
+    let newEmail
+    let password
+    let token
+    client
+      .verifyIdToken({
+        idToken: req.body.idToken,
+        audience: process.env.GOOGLE_CLIENT
+      })
+      .then(ticket => {
+        const {email} = ticket.getPayload()
+        newEmail = email
+        password = getPassword(email)
+        token = getToken(email)
+
+        return User.findOne({email: newEmail})
+      })
+      .then(result => {
+        if(result) {
+          res.status(200).json({newEmail, token})
+        } else {
+          return User.create({
+            email: newEmail,
+            password: password
+          })
+        }
+      })
+      .then(() => {
+        res.status(200).json({newEmail, token})
+      })
+      .catch(next)
   }
 }
 
