@@ -5,6 +5,7 @@ const getToken = require('../helpers/getToken')
 const getPassword = require('../helpers/getPassword')
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const compareDate = require('../helpers/compareDate')
 
 class ControllerUser {
   static addFav(req, res, next){
@@ -18,8 +19,8 @@ class ControllerUser {
     // "city": "jakartaIndo",
     // "artists": "nameArtist",
     // "currency": "USD",
-    // "exchangeRate": 2,
-    // "isHoliday": true
+    // "exchangeRate": 2
+    // "holidayList: array of objects {date, detail}"
     // }
     let eventId = req.params.id
 
@@ -37,7 +38,7 @@ class ControllerUser {
           favObj.artists = input.artists
           favObj.currency = input.currency
           favObj.exchangeRate = input.exchangeRate
-          favObj.isHoliday = input.isHoliday
+          favObj.isHoliday = compareDate(input.holidayList, input.startDate)
 
           return Favorite.create(favObj)
 
