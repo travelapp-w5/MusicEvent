@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- Link to CSS file -->
+  <link rel="stylesheet" type="text/css" href="./style.css">
+  <!-- Jquery -->
+  <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+  <title>Document</title>
+</head>
+<body>
+  <!-- <form id="search-form" action="/" method="POST">
+    <input id="search-input" class="input2" type="text" placeholder="Enter city" name="city" autocomplete="off">
+    <input id="search-input" class="input2" type="text" placeholder="Enter country" name="country" autocomplete="off">
+    <button class="button" type="submit">Search</button><span id="search-status"></span>
+  </form> -->
+  <div id="outside" style="display: none;">
+    <div id="title">Music Events</div>
+    <div id="subtitle">
+      Register for a new account / login to an existing account.
+    </div>
+    <div id="front-forms" style="display: flex; justify-content: center;">
+      <form id="register-form" class="form1" action="/" method="POST" autocomplete="off">
+        <div class="form1title">Register</div>
+        <input class="input1" type="text" placeholder="New Email" name="email" required>
+        <br>
+        <input class="input1" type="password" placeholder="New Password" name="password" required>
+        <br>
+        <button class="button" type="submit">Register</button>
+      </form>
+      <form id="login-form" class="form1" action="/" method="POST" autocomplete="off">
+        <div class="form1title">Login</div>
+        <input class="input1" type="text" placeholder="Email" name="email" required>
+        <br>
+        <input class="input1" type="password" placeholder="Password" name="password" required>
+        <br>
+        <button class="button" type="submit">Login</button>
+      </form>
+    </div>
+    <div id="reg-message">
+      <p>Successfully Registered</p>
+      <button id="ok1" class="button">Return</button>
+    </div>
+  </div>
+  <div id="inside" style="display: block;">
+    <nav class="navbar">
+      <a id="toplogo" class="navlink">Music Events</a>
+      <div>
+        <a id="username" class="navlink">User</a>
+        <a id="logout" class="navlink" onclick="logout()">Log Out</a>
+      </div>
+    </nav>
+    <div id="grid">
+      <section id="search">
+        <div class="pad">
+          <form id="search-form" action="/" method="POST">
+            <p class="heading-md" style="margin-bottom: 0.5em;">Find artist's albums:</p>
+            <input id="search-input" class="input2" type="text" placeholder="enter artist name" name="search" autocomplete="off">
+            <button class="button button1" type="submit">Search</button><span id="search-status"></span>
+            <button id="clear" class="button button1" type="button" onclick="clearResults()">Clear</button>
+          </form>
+          <hr style="margin-bottom: 0.3rem;">
+          <div id="resfor" style="margin-bottom: 0.6rem; font-size: 0.85rem; color: #333;"></div>
+        </div>
+        <!-- Search results list -->
+        <div class="padcards">
+          <ul id="list1"></ul>
+        </div>
+      </section>
+      <section id="favorites">
+        <div class="pad">
+          <p class="heading-lg">My Favorites</p>
+          <hr>
+        </div>
+        <!-- Favorites list -->
+        <div class="padcards">
+          <ul id="list2"></ul>
+        </div>
+      </section>
+      <section id="details">
+        <div class="pad">
+          <p class="heading-lg" style="margin-bottom: 0.5em;">Details:</p>
+          <hr style="margin-bottom: 0.5rem;">
+          <p class="detail-title"></p>
+          <div class="detail-content">
+            <p class="tracklist-heading">Track Listing:</p>
+            <!-- Tracklist -->
+            <ul class="tracklist"></ul>
+            <p style="font-size: 0.9rem;">Orange arrows are links to music videos</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

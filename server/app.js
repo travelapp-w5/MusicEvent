@@ -1,17 +1,15 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
-const port = 3000
-const routes = require('./routers')
+const routes = require('./routes')
 const mongoose = require('mongoose');
-const dbName = "musicEvent"
-const url = "mongodb://localhost:27017/"+dbName
+const url = 'mongodb://localhost/musicevents'
 const cors = require('cors')
-require('dotenv').config()
+const port = 3000
+
 app.use(cors())
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
-
-app.listen(port, () => { console.log('Listening to port ', port) })
 
 mongoose.connect(url, {useNewUrlParser: true}, (err) => {
   if(err) console.log('error connect mongoose')
@@ -27,3 +25,5 @@ app.use((err, req, res, next) => {
     message: message
 	})
 })
+
+app.listen(port, () => { console.log('Listening to port ', port) })
