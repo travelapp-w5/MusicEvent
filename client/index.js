@@ -31,14 +31,52 @@ function appendEvent(obj) {
         Start date: ${obj.startDate}<br>
         Venue: ${obj.venue}&nbsp;&nbsp;&nbsp;City: ${obj.city}<br>
         Artists: ${obj.artists}<br>
-        Currency: ${obj.currency}&nbsp;&nbsp;&nbsp;Rate: ${obj.rate}<br>
+        Currency: ${obj.currency}&nbsp;&nbsp;&nbsp;Rate: ${obj.exchangeRate}<br>
       </p>
       <button class="button button1" onclick="addFav('${obj.eventId}')">Save</button>
     </div>`)
 }
 
-function appendFavorite(obj) {
-  // Later
+function populateFavorite(){
+  $('#list3').empty()
+  $.ajax({
+    method: "GET",
+    url: `${baseUrl}api/users/getFav`,
+    headers: {token: localStorage.getItem('token')}
+  })
+  .done(listFav => {
+    listFav.forEach(data => {
+      appendFavorite(data)
+    })
+  })
+}
+
+function appendFavorite(data) {
+  // artists: "Gareth Johnson"
+  // city: "Washington, DC, US"
+  // currency: "Euro"
+  // displayName: "DC Black Theatre & Arts Festival 2019"
+  // eventId: "38193844"
+  // exchangeRate: 16135
+  // isHoliday: false
+  // owner: "5d03476dc9306c0ffc863605"
+  // startDate: "2019-06-01"
+  // uri: "http://www.songkick.com/festivals/3078774-dc-black-theatre-arts/id/38193844-dc-black-theatre--arts-festival-2019?utm_source=57262&utm_medium=partner"
+  // venue: "Thearc: Town Hall Education Arts Recreation Campus"
+  // __v: 0
+  // _id: "5d034e04fcc81a2728d60945"
+    let htmlFav = `<li class="fav">
+      <p>
+        Name: ${data.displayName}<br>
+        Artists: ${data.artists}<br>
+        City: ${data.city}<br>
+        Date: ${data.startDate}<br>
+        isHoliday: ${data.isHoliday}<br>
+        Currency: ${data.currency}&nbsp;&nbsp;&nbsp;Rate: ${data.exchangeRate}<br>
+      </p>
+      <button class="button button1" type="submit" onclick="delFav('${data._id}')">delete</button>
+      </li>`
+    $('#list3').append(htmlFav)
 }
 
 function addFav(id) {
@@ -48,16 +86,16 @@ function addFav(id) {
       fav = event
     }
   }
-  fav.holidayList = holidayArr;
+  fav.holidayList = JSON.stringify(holidayArr);
 
   $.ajax({
     method: "POST",
-    url: `${baseUrl}/addFav/${id}`,
+    url: `${baseUrl}api/users/addFav/${id}`,
     data: fav,
     headers: {token: localStorage.getItem('token')}
   })
   .done(data => {
-    console.log(data)
+    appendFavorite(data)
   })
 }
 
@@ -138,6 +176,8 @@ function onSignIn(googleUser) {
     alert('Success signed in with google')
     $('#outside').hide();
     $('#inside').show();
+
+    populateFavorite()
   })
   .fail((err) => {
     // console.log(err.responseJSON.message)
@@ -181,6 +221,8 @@ $('#login-form').submit(() => {
     accessToken(result)
     $('#outside').hide();
     $('#inside').show();
+
+    populateFavorite()
   })
   .fail(err => {
     alert(err.responseJSON.message)

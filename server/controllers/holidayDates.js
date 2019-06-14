@@ -3,9 +3,7 @@ let holidaysAPI = require('../helpers/axios.js').holidaysAPI
 
 class ControllerHolidayDates {
 	static getNextPublicHolidays(req, res, next){
-		console.log(req.body)
 		let country = req.body.country.toLowerCase()
-		console.log(country)
 		return ControllerHolidayDates.getAvailableCountries(req, res, next)
 			.then(countryList => {
 				//find key from value [{ key: 'VN', value: 'Vietnam' }, ..]
@@ -15,7 +13,6 @@ class ControllerHolidayDates {
 			      	countryCode = c.key
 			      }
 			    }
-				console.log('countrycode:', countryCode)
 				// console.log(countryCode)
 				return holidaysAPI.get("/NextPublicHolidays/"+countryCode)
 			})
@@ -87,7 +84,6 @@ class ControllerHolidayDates {
 
 		return holidaysAPI.get("/availableCountries")
 			.then(({data}) => {
-				console.log(data)
 				return data
 			})
 			.catch(next)	

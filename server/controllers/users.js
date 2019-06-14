@@ -8,23 +8,26 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const compareDate = require('../helpers/compareDate')
 
 class ControllerUser {
-  static addFav(req, res, next){
-    let userId = req.userData.id
-    let input = req.body
-    // {
-    // "displayName": "namaDisplay",
-    // "startDate": "2019-06-01",
-    // "uri": "link",
-    // "venue": "gbk",
-    // "city": "jakartaIndo",
-    // "artists": "nameArtist",
-    // "currency": "USD",
-    // "exchangeRate": 2
-    // "holidayList: array of objects {date, detail}"
-    // }
-    let eventId = req.params.id
+  static getFav(req, res, next){
+    let userEmail = req.userData.email
+    User.findOne({email: userEmail})
+      .then(found => {
+        let userId = found._id
+        return Favorite.find({owner: userId})
+      })
+      .then(favList => {
+        res.json(favList)
+      })
+      .catch(next)
+  }
 
-    User.findOne({_id: userId})
+  static addFav(req, res, next){
+    let holidayListArray = JSON.parse(req.body.holidayList)
+    let userEmail = req.userData.email
+    let eventId = req.params.eventId
+    let input = req.body
+
+    User.findOne({email: userEmail})
       .then(found => {
         if (found){
           let favObj = {}
@@ -38,7 +41,7 @@ class ControllerUser {
           favObj.artists = input.artists
           favObj.currency = input.currency
           favObj.exchangeRate = input.exchangeRate
-          favObj.isHoliday = compareDate(input.holidayList, input.startDate)
+          favObj.isHoliday = compareDate(holidayListArray, input.startDate)
 
           return Favorite.create(favObj)
 

@@ -8,6 +8,7 @@ router.post('/googleSignin', ControllerUser.googleSignin)
 
 const isAuthenticated = require('../middlewares/authentication')
 router.post('/addFav/:eventId', isAuthenticated, ControllerUser.addFav)
+router.get('/getFav', isAuthenticated, ControllerUser.getFav)
 
 
 module.exports = router

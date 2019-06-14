@@ -13,7 +13,6 @@ app.use(express.json());
 
 mongoose.connect(url, {useNewUrlParser: true}, (err) => {
   if(err) console.log('error connect mongoose')
-  else console.log('connected to mongoose')
 });
 
 app.use('/api', routes)
