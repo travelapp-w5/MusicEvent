@@ -4,10 +4,8 @@ let holidaysAPI = require('../helpers/axios.js').holidaysAPI
 class ControllerHolidayDates {
 	static getNextPublicHolidays(req, res, next){
 		let country = req.body.country.toLowerCase()
-
 		return ControllerHolidayDates.getAvailableCountries(req, res, next)
 			.then(countryList => {
-				// console.log(countryList)
 				//find key from value [{ key: 'VN', value: 'Vietnam' }, ..]
 				let countryCode = "ID" //default value
 				for(let c of countryList) {
@@ -15,7 +13,6 @@ class ControllerHolidayDates {
 			      	countryCode = c.key
 			      }
 			    }
-
 				// console.log(countryCode)
 				return holidaysAPI.get("/NextPublicHolidays/"+countryCode)
 			})
@@ -35,7 +32,6 @@ class ControllerHolidayDates {
 	    arr.push(new Date(dt));
 	    dt.setDate(dt.getDate() + 1);
 	  }
-
 	  return arr;
 	}
 
@@ -63,8 +59,8 @@ class ControllerHolidayDates {
 
 	static getHolidays(req, res, next){
 		//get dates for the next month
- 		let nextMonthDateArray = ControllerHolidayDates.getNextMonthDateArray()
- 		let weekends = ControllerHolidayDates.getWeekends(nextMonthDateArray)
+		 let nextMonthDateArray = ControllerHolidayDates.getNextMonthDateArray()
+		 let weekends = ControllerHolidayDates.getWeekends(nextMonthDateArray)
 
 		ControllerHolidayDates.getNextPublicHolidays(req, res, next)
 			.then(publicHolidays => {
@@ -85,6 +81,7 @@ class ControllerHolidayDates {
 	}
 
 	static getAvailableCountries(req, res, next){
+
 		return holidaysAPI.get("/availableCountries")
 			.then(({data}) => {
 				return data

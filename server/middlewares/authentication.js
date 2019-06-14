@@ -3,6 +3,7 @@ const User = require('../models/users.js')
 
 module.exports = (req,res, next) => {
   if(req.headers.hasOwnProperty('token')) {
+    // console.log("di Authentication")
     try {
       // Jays
       // var decode = verifyToken(req.headers.token);
@@ -10,8 +11,10 @@ module.exports = (req,res, next) => {
       // next()
 
       // Max
+      // console.log("decoding")
       const decoded = verifyToken(req.headers.token);
-      User.find({ _id: decoded.id })
+      // console.log("decoded",decoded)
+      User.find({ email: decoded.email })
         .then(users => {
           // console.log("users",users)
           // console.log("decoded",decoded)

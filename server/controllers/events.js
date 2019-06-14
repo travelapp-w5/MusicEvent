@@ -42,6 +42,7 @@ class Controller {
               }
               artists = artists.join(", ")
               return {
+                  eventId: event.id,
                   displayName: event.displayName,
                   startDate: event.start.date,
                   uri: event.uri,
