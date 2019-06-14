@@ -29,10 +29,10 @@ function appendEvent(obj) {
     `<div class="event">
       <a href="${obj.uri}">${obj.displayName}</a><br>
       <p>
-        Start date: ${obj.startDate}<br>
-        Venue: ${obj.venue}&nbsp;&nbsp;&nbsp;City: ${obj.city}<br>
-        Artists: ${obj.artists}<br>
-        Currency: ${obj.currency}&nbsp;&nbsp;&nbsp;Rate: ${obj.exchangeRate}<br>
+        <b>Start date</b>: ${obj.startDate}<br>
+        <b>Venue</b>: ${obj.venue}&nbsp;&nbsp;&nbsp;<b>City</b>: ${obj.city}<br>
+        <b>Artists</b>: ${obj.artists}<br>
+        <b>Currency</b>: ${obj.currency}&nbsp;&nbsp;&nbsp;<b>Rate</b>: ${obj.exchangeRate}<br>
       </p>
       <button class="button button1" onclick="addFav('${obj.eventId}')">Save</button>
     </div>`)
@@ -67,16 +67,22 @@ function appendFavorite(data) {
   // venue: "Thearc: Town Hall Education Arts Recreation Campus"
   // __v: 0
   // _id: "5d034e04fcc81a2728d60945"
+  if(data.isHoliday) {
+
+  }
+
     let htmlFav = `<li class="fav">
       <p>
         Name: ${data.displayName}<br>
         Artists: ${data.artists}<br>
         City: ${data.city}<br>
         Date: ${data.startDate}<br>
-        isHoliday: ${data.isHoliday}<br>
         Currency: ${data.currency}&nbsp;&nbsp;&nbsp;Rate: ${data.exchangeRate}<br>
       </p>
       <button class="button button1" type="submit" onclick="delFav('${data._id}')">delete</button>
+      <div class="holidayStatus">
+        <h4 class="${data.isHoliday}">Holiday</h4><br>
+      </div>
       </li>`
     $('#list3').append(htmlFav)
 }
