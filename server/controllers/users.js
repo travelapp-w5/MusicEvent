@@ -8,6 +8,16 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const compareDate = require('../helpers/compareDate')
 
 class ControllerUser {
+
+  static delFav(req, res, next){
+    let delFavId = req.params.favId
+    Favorite.findByIdAndDelete(delFavId)
+    .then(done => {
+      res.json(done)
+    })
+    .catch(next)
+  }
+
   static getFav(req, res, next){
     let userEmail = req.userData.email
     User.findOne({email: userEmail})
@@ -44,7 +54,6 @@ class ControllerUser {
           favObj.isHoliday = compareDate(holidayListArray, input.startDate)
 
           return Favorite.create(favObj)
-
         } else {
           //user not found
           throw new Error("user not found")

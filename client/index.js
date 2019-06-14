@@ -2,6 +2,7 @@ const baseUrl = 'http://localhost:3000/';
 // Data from stef's endpoint
 let holidayArr
 let eventArr
+let favArr
 
 // Format form inputs to json-like
 function format(form) {
@@ -45,6 +46,7 @@ function populateFavorite(){
     headers: {token: localStorage.getItem('token')}
   })
   .done(listFav => {
+    favArr = listFav
     listFav.forEach(data => {
       appendFavorite(data)
     })
@@ -79,6 +81,22 @@ function appendFavorite(data) {
     $('#list3').append(htmlFav)
 }
 
+function delFav(id){
+  //id is favorite model id
+  $.ajax({
+    method: "DELETE",
+    url: `${baseUrl}api/users/delFav/`+id,
+    headers: {token: localStorage.getItem('token')}
+  })
+  .done(data => {
+    console.log('deleted 1 favorite')
+    populateFavorite()
+  })
+  .fail((jqXHR, textStatus) => {
+    console.log('Failed: ', textStatus)
+  })
+}
+
 function addFav(id) {
   let fav
   for(let event of eventArr) {
@@ -96,6 +114,9 @@ function addFav(id) {
   })
   .done(data => {
     appendFavorite(data)
+  })
+  .fail((jqXHR, textStatus) => {
+    console.log('Failed: ', textStatus)
   })
 }
 
@@ -121,7 +142,7 @@ $(document).ready(() => {
     })
       .done(data => {
         eventArr = data.events
-        console.log(data);
+        // console.log(data);
         appendCurrency(data);
         $('#list2').empty();
         for(let event of data.events) {
