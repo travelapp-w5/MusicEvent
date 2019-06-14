@@ -2,10 +2,9 @@ let jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 module.exports = (input) => {
+  console.log(input)
   let token = jwt.sign({
-    id: input.id, 
-    username: input.username
+    email: input
   }, process.env.JWT_SECRET )
-
   return token
 }
