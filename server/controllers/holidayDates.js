@@ -13,16 +13,59 @@ class ControllerHolidayDates {
 			.catch(next)
 	}
 
+	static getDateArray (start, end) {
+	  let arr = []
+	  let dt = new Date(start)
+
+	  while (dt <= end) {
+	    arr.push(new Date(dt));
+	    dt.setDate(dt.getDate() + 1);
+	  }
+
+	  return arr;
+	}
+
+	static nextMonth(){
+		return (new Date()).setDate((new Date()).getDate() + 31)
+	}
+
+	static getNextMonthDateArray () {
+		let startDate = new Date()
+		let endDate = ControllerHolidayDates.nextMonth()
+
+ 		return ControllerHolidayDates.getDateArray(startDate, endDate)
+	}
+
+	static getWeekends(dateArray){
+		let weekendDates = []
+		dateArray.forEach(dateObj => {
+			let isWeekend = dateObj.getDay() % 6 == 0
+			if(isWeekend){
+				weekendDates.push({date: dateObj, detail: "weekend"})
+			}
+		})
+		return weekendDates
+	}
 
 	static getHolidays(req, res, next){
-		//get weekends
-		let curDate = new Date()
-		console.log(curDate)
+		//get dates for the next month
+ 		let nextMonthDateArray = ControllerHolidayDates.getNextMonthDateArray()
+ 		let weekends = ControllerHolidayDates.getWeekends(nextMonthDateArray)
 
 		ControllerHolidayDates.getNextPublicHolidays(req, res, next)
 			.then(publicHolidays => {
-				// console.log(publicHolidays)
-				res.status(200).json(publicHolidays)
+				let holArray = []
+				publicHolidays.forEach(entry => {
+					let nextMonth = ControllerHolidayDates.nextMonth()
+					let entryDate = new Date(entry.date)
+					if (entryDate <= nextMonth){
+						holArray.push({date: entryDate, detail: entry.name})
+					}
+				})
+				holArray = holArray.concat(weekends)
+				//sort by date
+				holArray.sort((a, b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
+				res.status(200).json(holArray)
 			})
 
 	}
