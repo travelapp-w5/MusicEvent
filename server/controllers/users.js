@@ -1,4 +1,5 @@
 const User = require('../models/users')
+const Favorite = require('../models/favorite.js')
 const comparePassword = require('../helpers/comparePassword')
 const getToken = require('../helpers/getToken')
 const getPassword = require('../helpers/getPassword')
@@ -6,6 +7,52 @@ const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 class ControllerUser {
+  static addFav(req, res, next){
+    let userId = req.userData.id
+    let input = req.body
+    // {
+    // "displayName": "namaDisplay",
+    // "startDate": "2019-06-01",
+    // "uri": "link",
+    // "venue": "gbk",
+    // "city": "jakartaIndo",
+    // "artists": "nameArtist",
+    // "currency": "USD",
+    // "exchangeRate": 2,
+    // "isHoliday": true
+    // }
+    let eventId = req.params.id
+
+    User.findOne({_id: userId})
+      .then(found => {
+        if (found){
+          let favObj = {}
+          favObj.owner = found._id
+          favObj.eventId = eventId
+          favObj.displayName = input.displayName
+          favObj.startDate = input.startDate
+          favObj.uri = input.uri
+          favObj.venue = input.venue
+          favObj.city = input.city
+          favObj.artists = input.artists
+          favObj.currency = input.currency
+          favObj.exchangeRate = input.exchangeRate
+          favObj.isHoliday = input.isHoliday
+
+          return Favorite.create(favObj)
+
+        } else {
+          //user not found
+          throw new Error("user not found")
+        }
+      })
+      .then(fav => {
+        console.log("saved 1 favorite")
+        res.status(201).json(fav)
+      })
+      .catch(next)
+  }
+
   static findAll(req, res, next) {
     User.find()
     .then(result => {

@@ -5,6 +5,6 @@ module.exports = (input) => {
   console.log(input)
   let token = jwt.sign({
     email: input
-  }, process.env.JWT_SECRET )
+  }, process.env.JWT_SECRET, {expiresIn: '4h'} )
   return token
 }

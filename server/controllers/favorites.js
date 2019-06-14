@@ -1,6 +1,6 @@
 const Favorite = require('../models/favorite.js')
 
-class Controller {
+class ControllerFav {
   static create(req, res, next) {
     // displayName: String,
     // startDate: String,
@@ -51,4 +51,4 @@ class Controller {
   }
 }
 
-module.exports = Controller
+module.exports = ControllerFav

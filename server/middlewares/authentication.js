@@ -11,8 +11,10 @@ module.exports = (req,res, next) => {
 
       // Max
       const decoded = verifyToken(req.headers.token);
-      User.find({ email: decoded.email })
+      User.find({ _id: decoded.id })
         .then(users => {
+          // console.log("users",users)
+          // console.log("decoded",decoded)
           if(users.length > 0) {
             req.userData = decoded;
             next()
